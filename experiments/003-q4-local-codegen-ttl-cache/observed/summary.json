@@ -1,0 +1,14 @@
+{
+  "model_family": "Qwen3.8-27B",
+  "quantization": "UD-IQ4_XS",
+  "temperature": 0.0,
+  "run_count": 3,
+  "successful_runs": 3,
+  "public_tests": 6,
+  "additional_tests": 3,
+  "all_runs_passed": true,
+  "artifact_hashes_identical": true,
+  "generation_tps": [3.5, 3.5, 3.4],
+  "peak_memory_gb": [14.097, 14.133, 14.142],
+  "model_deleted_after_test": true
+}

@@ -26,3 +26,16 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Model files and generated runtime artifacts
+*.gguf
+*.safetensors
+*.bin
+.cache/
+llama.cpp/build/
