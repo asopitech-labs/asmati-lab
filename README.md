@@ -32,7 +32,8 @@ experiments/
     src/
     expected/
     observed/
-`.github/ISSUE_TEMPLATE/
+
+.github/ISSUE_TEMPLATE/
 ```
 
 実験コードは小さく保ちます。ライブラリとしての完成度や本番利用を、このリポジトリの目的にはしません。
