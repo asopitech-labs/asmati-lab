@@ -1,0 +1,28 @@
+# OS
+.DS_Store
+
+# Nim
+nimcache/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+
+# C/C++ build output
+build/
+cmake-build-*/
+*.exe
+
+# Rust
+target/
+
+# Node
+node_modules/
+dist/
+
+# Local scratch
+.env
+.env.*
+!.env.example
