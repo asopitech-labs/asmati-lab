@@ -1,0 +1,7 @@
+command
+./observed/bin/scalar_proc
+
+stdout
+noArgs=7
+addOne(41)=42
+half(3.5)=1.75
