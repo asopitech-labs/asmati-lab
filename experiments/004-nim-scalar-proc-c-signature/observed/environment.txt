@@ -1,0 +1,29 @@
+issue: #28
+executed_at: 2026-08-25T09:05:50+0900
+
+uname -a
+Darwin MacBook-Air.local 25.5.0 Darwin Kernel Version 25.5.0: Tue Jun  9 22:19:21 PDT 2026; root:xnu-12377.121.10~1/RELEASE_ARM64_T8122 arm64
+
+sw_vers
+ProductName:		macOS
+ProductVersion:		26.5.2
+BuildVersion:		25F84
+
+nim --version
+Nim Compiler Version 2.2.10 [MacOSX: amd64]
+Compiled at 2026-04-24
+Copyright (c) 2006-2026 by Andreas Rumpf
+
+active boot switches: -d:release -d:nimUseLinenoise
+
+clang --version
+Apple clang version 21.0.0 (clang-2100.1.1.101)
+Target: arm64-apple-darwin25.5.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+
+nim compile command
+nim c --nimcache:observed/nimcache -o:observed/bin/scalar_proc src/scalar_proc.nim
+
+generated C compiler command
+clang -c -w -ferror-limit=3 -fno-strict-aliasing -pthread -I/usr/local/Cellar/nim/2.2.10/nim/lib -I./src -o observed/nimcache/@mscalar_proc.nim.c.o observed/nimcache/@mscalar_proc.nim.c

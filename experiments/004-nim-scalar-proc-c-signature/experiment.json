@@ -1,0 +1,38 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "004-nim-scalar-proc-c-signature",
+  "issue": 28,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/scalar_proc.nim", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/generated_c_excerpt.c", "kind": "file"},
+    {"path": "observed/observation-table.md", "kind": "file"},
+    {"path": "observed/run-2026-08-25.txt", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "NimからC経由でcompile",
+        "argv": ["nim", "c", "--nimcache:observed/nimcache", "-o:observed/bin/scalar_proc", "src/scalar_proc.nim"],
+        "timeout_seconds": 120
+      },
+      {
+        "name": "生成Cのscalar proc署名を検証",
+        "argv": ["python3", "tests/verify_generated_c.py"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["generated C signatures verified"]
+      },
+      {
+        "name": "生成バイナリの出力を検証",
+        "argv": ["./observed/bin/scalar_proc"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["noArgs=7", "addOne(41)=42", "half(3.5)=1.75"]
+      }
+    ]
+  }
+}
