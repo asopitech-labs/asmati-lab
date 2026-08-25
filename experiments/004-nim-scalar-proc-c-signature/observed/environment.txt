@@ -1,7 +1,5 @@
 issue: #28
-execution_date_context: 2026-08-24
-local_clock_observed: 2026-08-25T09:05:50+0900
-local_clock_note: task context date and local clock date were inconsistent; public record keeps the task date and preserves the observed clock value separately.
+executed_at: 2026-08-25T09:05:50+0900
 
 uname -a
 Darwin MacBook-Air.local 25.5.0 Darwin Kernel Version 25.5.0: Tue Jun  9 22:19:21 PDT 2026; root:xnu-12377.121.10~1/RELEASE_ARM64_T8122 arm64

@@ -14,8 +14,7 @@ int/floatの引数と戻り値に限定し、Nimのprocシグネチャが生成C
 
 ## 実行環境
 
-- 実行日: 2026-08-24
-- 実行時刻の扱い: タスク文脈の日付は`2026-08-24`。ローカル時計は`2026-08-25T09:05:50+0900`を返したため、日付ずれは未確認として`observed/environment.txt`へ残した。
+- 実行日時: 2026-08-25T09:05:50+0900
 - OS: macOS 26.5.2
 - CPU: Apple Silicon
 - Nim: 2.2.10
@@ -34,7 +33,7 @@ nim c --nimcache:observed/nimcache -o:observed/bin/scalar_proc src/scalar_proc.n
 
 - `src/scalar_proc.nim`: 最小の入力コード
 - `observed/environment.txt`: versionと実行環境
-- `observed/run-2026-08-24.txt`: バイナリ実行結果
+- `observed/run-2026-08-25.txt`: バイナリ実行結果
 - `observed/generated_c_excerpt.c`: 生成Cの該当箇所抜粋
 - `observed/observation-table.md`: 観察表
 
