@@ -29,6 +29,12 @@ nim c --nimcache:observed/nimcache -o:observed/bin/scalar_proc src/scalar_proc.n
 ./observed/bin/scalar_proc
 ```
 
+リポジトリ共通runnerからは、manifestに宣言したcompile、生成C署名検査、実行出力検査を順に実行する。
+
+```bash
+python3 tools/experiment_ci.py run 004-nim-scalar-proc-c-signature
+```
+
 ## 生成物
 
 - `src/scalar_proc.nim`: 最小の入力コード
