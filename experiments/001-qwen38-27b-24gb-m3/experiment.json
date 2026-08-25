@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "001-qwen38-27b-24gb-m3",
+  "issue": 17,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "observed/REPORT.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "manual",
+    "reason": "Apple Silicon 24GB環境とローカルモデルが必要な観察実験のため"
+  }
+}
