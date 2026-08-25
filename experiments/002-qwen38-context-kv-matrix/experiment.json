@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "002-qwen38-context-kv-matrix",
+  "issue": 18,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "observed/REPORT.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "manual",
+    "reason": "Apple Silicon 24GB環境とローカルモデルが必要な計測実験のため"
+  }
+}

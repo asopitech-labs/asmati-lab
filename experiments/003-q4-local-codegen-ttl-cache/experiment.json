@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "003-q4-local-codegen-ttl-cache",
+  "issue": 19,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "expected/generated_ttl_cache.py", "kind": "file"},
+    {"path": "observed/summary.json", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "ubuntu-latest",
+    "toolchain": {"kind": "python", "version": "3.13"},
+    "steps": [
+      {
+        "name": "公開受入テスト",
+        "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-p", "test_public_acceptance.py"],
+        "timeout_seconds": 60
+      },
+      {
+        "name": "追加契約テスト",
+        "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-p", "test_hidden_contract.py"],
+        "timeout_seconds": 60
+      }
+    ]
+  }
+}
