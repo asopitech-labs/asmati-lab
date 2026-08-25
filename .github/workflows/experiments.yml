@@ -1,0 +1,65 @@
+name: experiments
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/experiments.yml"
+      - "experiments/**"
+      - "schemas/**"
+      - "tools/**"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/experiments.yml"
+      - "experiments/**"
+      - "schemas/**"
+      - "tools/**"
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      count: ${{ steps.plan.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Validate manifests
+        run: python3 tools/experiment_ci.py validate
+      - name: Test CI runner
+        run: python3 -m unittest discover -s tools/tests -p "test_*.py"
+      - name: Build changed-experiment matrix
+        id: plan
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: python3 tools/experiment_ci.py plan --base "$BASE_SHA" --head "$HEAD_SHA" --github-output "$GITHUB_OUTPUT"
+
+  experiment:
+    needs: plan
+    if: needs.plan.outputs.count != '0'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    name: ${{ matrix.experiment }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: Set up Nim
+        if: matrix.toolchain == 'nim'
+        uses: jiro4989/setup-nim-action@v2
+        with:
+          nim-version: ${{ matrix.toolchain_version }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run experiment contract
+        run: python3 tools/experiment_ci.py run "${{ matrix.experiment }}"

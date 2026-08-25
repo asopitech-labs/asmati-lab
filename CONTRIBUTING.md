@@ -40,6 +40,7 @@ Issueは公開物です。公開できない内容をIssueに書かないでく�
 
 ```text
 experiments/<experiment-id>-<topic>/
+  experiment.json
   README.md
   src/
   expected/
@@ -47,6 +48,8 @@ experiments/<experiment-id>-<topic>/
 ```
 
 - `README.md`に問い、環境、実行方法、結果を記録する。
+- `experiment.json`に共通CI契約を記録する。GitHub-hosted runnerで再現できる場合は`automated`、できない場合は`manual`と理由を指定する。
+- `automated`実験はtoolchain、OS、argv形式のstep、検証対象artifactを宣言する。共通runnerへIssue固有のコマンドをハードコードしない。
 - コードは最小限にする。製品コードや完成ライブラリへ育てる必要はない。
 - 生成C、object、library、assembly、ログなどは、何を確認するためのファイルかREADMEに書く。
 - 大きなバイナリや再生成できるcacheはcommitしない。必要なら生成手順と保存先を記録する。

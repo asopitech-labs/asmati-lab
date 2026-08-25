@@ -41,3 +41,5 @@ __pycache__/
 *.bin
 .cache/
 llama.cpp/build/
+experiments/**/observed/bin/
+experiments/**/observed/nimcache/
