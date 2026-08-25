@@ -3,14 +3,12 @@
 
 # Nim
 nimcache/
-experiments/**/observed/nimcache/
 *.o
 *.obj
 *.a
 *.so
 *.dylib
 *.dll
-experiments/**/observed/bin/
 
 # C/C++ build output
 build/
