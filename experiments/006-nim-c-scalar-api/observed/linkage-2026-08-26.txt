@@ -1,0 +1,15 @@
+$ otool -D observed/bin/libscalar_api.dylib
+observed/bin/libscalar_api.dylib:
+@rpath/libscalar_api.dylib
+
+$ otool -L observed/bin/c_caller
+observed/bin/c_caller:
+	@rpath/libscalar_api.dylib (compatibility version 0.0.0, current version 0.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)
+
+$ nm -u observed/bin/c_caller
+_asmati_add_ints
+_asmati_half
+_printf
+
+C callerはscalar APIを未定義symbolとしてlibraryへ要求するが、`_NimMain`は直接要求していない。

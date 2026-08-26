@@ -1,0 +1,5 @@
+$ ./observed/bin/c_caller
+add(19,23)=42
+half(3.5)=1.75
+
+exit status: 0

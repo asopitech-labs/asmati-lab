@@ -1,0 +1,7 @@
+$ nm -gU observed/bin/libscalar_api.dylib
+000000000000cc08 T _NimDestroyGlobals
+000000000000cc40 T _NimMain
+000000000000c9f8 T _asmati_add_ints
+000000000000cba4 T _asmati_half
+
+Mach-OはC symbolへ先頭underscoreを付けて表示する。addressはこのdebug buildの観測値であり、安定した契約として扱わない。
