@@ -22,6 +22,8 @@ GENERATED_C_PATTERNS = {
 }
 
 NIMBASE_PATTERNS = {
+    "C++ extern C linkage": r'^#\s*define\s+NIM_EXTERNC\s+extern\s+"C"\s*$',
+    "C empty extern C expansion": r"^#\s*define\s+NIM_EXTERNC\s*$",
     "cdecl expansion": r"#\s*define\s+N_CDECL\(rettype,\s*name\)\s+rettype\s+name",
     "default-visible export": r"#\s*define\s+N_LIB_EXPORT\s+NIM_EXTERNC\s+__attribute__\(\(visibility\(\"default\"\)\)\)",
     "POSIX constructor": r"#define\s+NIM_POSIX_INIT\s+__attribute__\(\(constructor\)\)",
@@ -36,12 +38,26 @@ def main() -> int:
     experiment = Path(__file__).parents[1]
     header = (experiment / "observed" / "scalar_api.h").read_text(encoding="utf-8")
     generated_c = (experiment / "observed" / "nimcache" / "@mscalar_api.nim.c").read_text(encoding="utf-8")
-    nimbase = (find_nim_lib(experiment) / "nimbase.h").read_text(encoding="utf-8")
+    nimbase_path = find_nim_lib(experiment) / "nimbase.h"
+    nimbase = nimbase_path.read_text(encoding="utf-8")
 
     missing = []
     missing.extend(f"header: {name}" for name in missing_patterns(header, HEADER_PATTERNS))
     missing.extend(f"generated C: {name}" for name in missing_patterns(generated_c, GENERATED_C_PATTERNS))
     missing.extend(f"nimbase.h: {name}" for name in missing_patterns(nimbase, NIMBASE_PATTERNS))
+
+    expanded_probe = subprocess.run(
+        ["clang", "-E", "-P", "-x", "c", "-include", str(nimbase_path), "-"],
+        input="N_LIB_EXPORT N_CDECL(int, asmati_macro_probe)(int value);\n",
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    if re.search(
+        r'__attribute__\(\(visibility\("default"\)\)\)\s+int\s+asmati_macro_probe\(int\s+value\);',
+        expanded_probe,
+    ) is None:
+        missing.append("C macro chain: default-visible C function definition")
 
     library = experiment / "observed" / "bin" / "libscalar_api.dylib"
     symbols = subprocess.run(

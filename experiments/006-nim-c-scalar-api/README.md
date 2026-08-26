@@ -55,6 +55,8 @@ python3 tools/experiment_ci.py run 006-nim-c-scalar-api
 
 生成された`scalar_api.h`は`nimbase.h`をincludeする。Nim library directoryをinclude pathへ加えずにC callerをcompileすると、`'nimbase.h' file not found`で失敗した。修正版は`nim dump`から`nimbase.h`のあるdirectoryを見つけ、`clang`へ`-I/usr/local/Cellar/nim/2.2.10/nim/lib`相当を渡した。ローカル絶対pathは再現scriptが実行時に解決するため、manifestには固定していない。
 
+今回のcallerはC11としてcompileするため、`nimbase.h`の`NIM_EXTERNC`は空に展開される。`N_LIB_EXPORT N_CDECL(int, asmati_add_ints)`は、このC条件ではdefault visibility attributeを持つ通常のC関数定義へ展開された。C++条件では同じ`NIM_EXTERNC`が`extern "C"`へ展開されるが、C++ caller自体は今回実行していない。
+
 ## 実行結果
 
 ```text
@@ -85,6 +87,7 @@ half(3.5)=1.75
 - `.exportc, dynlib, cdecl.`を付けた`cint`/`cdouble` procから、`int`/`double`を使うheader宣言とdefault-visibleなdynamic library symbolが生成された。
 - 独立したC callerは、そのheaderとlibraryを通して整数関数と浮動小数点関数を呼び出し、期待値を得た。
 - 生成header単体では完結せず、macro定義のためNim 2.2.10の`nimbase.h`がcompile時に必要だった。
+- C11での`NIM_EXTERNC`の空展開、`N_CDECL`、`N_LIB_EXPORT`を通した完全なmacro定義鎖が、default-visibleなC関数定義になることをpreprocessして検証した。
 - このmacOS/POSIX dynamic libraryでは生成されたconstructorが`NimMain`を呼ぶため、C caller内の明示的初期化呼び出しは不要だった。
 
 ## 未確認点
