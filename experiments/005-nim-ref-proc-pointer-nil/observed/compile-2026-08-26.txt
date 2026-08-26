@@ -1,0 +1,12 @@
+$ nim c --nimcache:observed/nimcache -o:observed/bin/ref_proc src/ref_proc.nim
+Hint: mm: orc; threads: on; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+CC: system/exceptions.nim
+CC: std/private/digitsutils.nim
+CC: system/dollars.nim
+CC: system.nim
+CC: ref_proc.nim
+Hint: [Link]
+29378 lines; 0.807s; 30.906MiB peakmem
+Result: SuccessX
+
+ローカル絶対pathは保存対象から除外した。
