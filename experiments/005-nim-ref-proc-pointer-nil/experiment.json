@@ -1,0 +1,40 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "005-nim-ref-proc-pointer-nil",
+  "issue": 29,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/ref_proc.nim", "kind": "file"},
+    {"path": "tests/verify_generated_c.py", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/compile-2026-08-26.txt", "kind": "file"},
+    {"path": "observed/run-2026-08-26.txt", "kind": "file"},
+    {"path": "observed/generated_c_excerpt.c", "kind": "file"},
+    {"path": "observed/observation-table.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "NimからC経由でcompile",
+        "argv": ["nim", "c", "--nimcache:observed/nimcache", "-o:observed/bin/ref_proc", "src/ref_proc.nim"],
+        "timeout_seconds": 120
+      },
+      {
+        "name": "生成Cのref pointerとnil分岐を検証",
+        "argv": ["python3", "tests/verify_generated_c.py"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["generated C ref pointer and nil branch verified"]
+      },
+      {
+        "name": "生成バイナリの出力を検証",
+        "argv": ["./observed/bin/ref_proc"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["present=42", "missing=-1", "keptIsNil=true"]
+      }
+    ]
+  }
+}

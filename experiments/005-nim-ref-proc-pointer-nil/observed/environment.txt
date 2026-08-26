@@ -1,0 +1,19 @@
+実行日時: 2026-08-26T09:03:06+0900
+OS: macOS 26.5.2 (build 25F84)
+CPU: arm64 / Apple Silicon
+Nim: 2.2.10 (Nim executable: Mach-O x86_64 / compiler表示: MacOSX amd64)
+C compiler: Apple clang 21.0.0 (clang-2100.1.1.101)
+生成binary: Mach-O 64-bit executable arm64
+Nim memory manager: ORC
+Nim threads: on
+Nim build mode: debug (opt: none)
+
+compile command:
+nim c --nimcache:observed/nimcache -o:observed/bin/ref_proc src/ref_proc.nim
+
+run command:
+./observed/bin/ref_proc
+
+architecture確認:
+file /usr/local/bin/nim
+file observed/bin/ref_proc

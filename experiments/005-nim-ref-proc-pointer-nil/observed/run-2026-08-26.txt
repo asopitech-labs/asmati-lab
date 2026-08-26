@@ -1,0 +1,4 @@
+$ ./observed/bin/ref_proc
+present=42
+missing=-1
+keptIsNil=true
