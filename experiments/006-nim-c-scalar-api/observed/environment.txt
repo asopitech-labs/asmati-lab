@@ -1,0 +1,26 @@
+実行日時: 2026-08-26T18:07:53+0900
+OS: macOS 26.5.2 (build 25F84)
+CPU: arm64 / Apple Silicon
+Nim: 2.2.10 (Nim executable: Mach-O x86_64 / compiler表示: MacOSX amd64)
+C compiler: Apple clang 21.0.0 (clang-2100.1.1.101)
+生成library: Mach-O 64-bit dynamically linked shared library arm64
+C caller: Mach-O 64-bit executable arm64
+Nim memory manager: ORC
+Nim threads: on
+Nim build mode: debug (opt: none)
+
+library compile command:
+nim c --app:lib '--passL:-install_name @rpath/libscalar_api.dylib' --header:scalar_api.h --nimcache:observed/nimcache --out:observed/bin/libscalar_api.dylib src/scalar_api.nim
+
+C caller compile/link command:
+python3 tests/build_c_caller.py
+
+run command:
+./observed/bin/c_caller
+
+architecture確認:
+file /usr/local/bin/nim
+file observed/bin/libscalar_api.dylib
+file observed/bin/c_caller
+
+ローカル絶対pathは保存対象から除外し、toolchain探索scriptが実行時に解決する。

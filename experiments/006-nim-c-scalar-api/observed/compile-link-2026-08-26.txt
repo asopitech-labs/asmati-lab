@@ -1,0 +1,19 @@
+$ nim c --app:lib '--passL:-install_name @rpath/libscalar_api.dylib' --header:scalar_api.h --nimcache:observed/nimcache --out:observed/bin/libscalar_api.dylib src/scalar_api.nim
+Hint: mm: orc; threads: on; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+Hint: [Link]
+Result: SuccessX
+
+$ clang -std=c11 -Wall -Wextra -Werror -Iobserved src/caller.c -Lobserved/bin -lscalar_api -Wl,-rpath,@loader_path -o observed/bin/c_caller
+In file included from src/caller.c:3:
+observed/scalar_api.h:6:10: fatal error: 'nimbase.h' file not found
+1 error generated.
+
+原因:
+生成headerが`#include "nimbase.h"`を含むため、生成headerのdirectoryだけではcompileできない。
+
+修正後のcommand（Nim library directoryは`nim dump`から実行時に探索）:
+$ python3 tests/build_c_caller.py
+clang -std=c11 -Wall -Wextra -Werror -Iobserved -I<NIM_LIB> src/caller.c -Lobserved/bin -lscalar_api -Wl,-rpath,@loader_path -o observed/bin/c_caller
+C caller compiled and linked
+
+ローカル絶対pathとcompile時間は保存対象から除外した。

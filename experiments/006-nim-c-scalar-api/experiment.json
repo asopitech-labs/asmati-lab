@@ -1,0 +1,73 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "006-nim-c-scalar-api",
+  "issue": 54,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/scalar_api.nim", "kind": "file"},
+    {"path": "src/caller.c", "kind": "file"},
+    {"path": "tests/prepare_outputs.py", "kind": "file"},
+    {"path": "tests/toolchain.py", "kind": "file"},
+    {"path": "tests/collect_header.py", "kind": "file"},
+    {"path": "tests/build_c_caller.py", "kind": "file"},
+    {"path": "tests/verify_library.py", "kind": "file"},
+    {"path": "tests/verify_caller.py", "kind": "file"},
+    {"path": "observed/scalar_api.h", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/compile-link-2026-08-26.txt", "kind": "file"},
+    {"path": "observed/run-2026-08-26.txt", "kind": "file"},
+    {"path": "observed/symbols-2026-08-26.txt", "kind": "file"},
+    {"path": "observed/linkage-2026-08-26.txt", "kind": "file"},
+    {"path": "observed/generated_c_excerpt.c", "kind": "file"},
+    {"path": "observed/nimbase-definition-excerpt.h", "kind": "file"},
+    {"path": "observed/observation-table.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "生成先を準備",
+        "argv": ["python3", "tests/prepare_outputs.py"],
+        "timeout_seconds": 30
+      },
+      {
+        "name": "Nim scalar APIをdynamic libraryとしてcompile",
+        "argv": ["nim", "c", "--app:lib", "--passL:-install_name @rpath/libscalar_api.dylib", "--header:scalar_api.h", "--nimcache:observed/nimcache", "--out:observed/bin/libscalar_api.dylib", "src/scalar_api.nim"],
+        "timeout_seconds": 120
+      },
+      {
+        "name": "生成headerを保存",
+        "argv": ["python3", "tests/collect_header.py"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["generated header saved to observed/scalar_api.h"]
+      },
+      {
+        "name": "header・公開symbol・POSIX初期化を検証",
+        "argv": ["python3", "tests/verify_library.py"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["header, public symbols, and POSIX initialization verified"]
+      },
+      {
+        "name": "C callerをcompile・link",
+        "argv": ["python3", "tests/build_c_caller.py"],
+        "timeout_seconds": 60,
+        "stdout_contains": ["C caller compiled and linked"]
+      },
+      {
+        "name": "C callerのlink境界を検証",
+        "argv": ["python3", "tests/verify_caller.py"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["C caller linkage without explicit NimMain verified"]
+      },
+      {
+        "name": "C callerからscalar APIを実行",
+        "argv": ["./observed/bin/c_caller"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["add(19,23)=42", "half(3.5)=1.75"]
+      }
+    ]
+  }
+}
