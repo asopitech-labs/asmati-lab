@@ -1,0 +1,5 @@
+$ python3 tests/verify_generated_c.py
+source proc, generated C function, and string runtime calls verified
+
+$ ./observed/bin/proc_runtime
+nim!
