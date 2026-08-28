@@ -1,0 +1,12 @@
+experiment: 007-nim-proc-runtime-call
+issue: 64
+executed_at: 2026-08-28T11:36:18+0900
+os: macOS 26.6.2 (build 25G83)
+cpu: arm64 / Apple Silicon
+nim: 2.2.10 [MacOSX: amd64]
+nim executable architecture: Mach-O x86_64
+c compiler: Apple clang 21.0.0 (clang-2100.1.1.101)
+generated executable architecture: Mach-O arm64
+backend: C
+memory manager: ORC
+build mode: debug (opt: none)

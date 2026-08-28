@@ -1,0 +1,15 @@
+$ nim c --nimcache:observed/nimcache --out:observed/bin/proc_runtime src/proc_runtime.nim
+Hint: used config file '/usr/local/Cellar/nim/2.2.10/nim/config/nim.cfg' [Conf]
+Hint: used config file '/usr/local/Cellar/nim/2.2.10/nim/config/config.nims' [Conf]
+......................................................................
+CC: system/exceptions.nim
+CC: std/private/digitsutils.nim
+CC: system/dollars.nim
+CC: system.nim
+CC: proc_runtime.nim
+Hint:  [Link]
+Hint: mm: orc; threads: on; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+29364 lines; 0.195s; 30.906MiB peakmem; proj: experiments/007-nim-proc-runtime-call/src/proc_runtime.nim; out: experiments/007-nim-proc-runtime-call/observed/bin/proc_runtime [SuccessX]
+
+結果: success
+注記: 最終Hint内のproject/output pathは、実行時の絶対pathからrepository相対pathへ正規化した。
