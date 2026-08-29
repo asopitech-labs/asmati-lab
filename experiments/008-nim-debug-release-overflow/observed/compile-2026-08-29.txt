@@ -1,0 +1,11 @@
+$ nim c --nimcache:observed/nimcache/debug --out:observed/bin/debug/overflow_compare src/overflow_compare.nim
+Hint: mm: orc; threads: on; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+generated C compiler option: no optimization flag
+result: SuccessX
+
+$ nim c -d:release --nimcache:observed/nimcache/release --out:observed/bin/release/overflow_compare src/overflow_compare.nim
+Hint: mm: orc; threads: on; opt: speed; options: -d:release
+generated C compiler option: -O3
+result: SuccessX
+
+両buildは同じsrc/overflow_compare.nimから、別のnimcacheと実行ファイルへ生成した。

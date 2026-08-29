@@ -1,0 +1,11 @@
+$ python3 tests/verify_generated_c.py
+debug/release overflow generation and definitions verified
+
+$ python3 tests/run_cases.py
+debug normal: exit=0 stdout=42
+release normal: exit=0 stdout=42
+debug boundary: exit=1 overflow_defect=true add_one_frame=true
+release boundary: exit=1 overflow_defect=true add_one_frame=false
+
+boundary input: 9223372036854775807
+boundary error substring: over- or underflow [OverflowDefect]
