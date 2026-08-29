@@ -1,0 +1,21 @@
+対象: generated CのaddOne関数とC compiler optionに限定した差分
+
+debug C compiler command:
+  clang ... (optimization flagなし)
+release C compiler command:
+  clang ... -O3 ...
+
+debug addOne only:
+  nimfr_("addOne", "src/overflow_compare.nim");
+  nimlf_(4, "src/overflow_compare.nim");
+  popFrame();
+
+debug/release common core:
+  if (nimAddInt(value_p0, ((NI)1), &temporary)) {
+    raiseOverflow();
+    goto BeforeRet_;
+  }
+  result = (NI)(temporary);
+  return result;
+
+releaseではdebug frame bookkeepingがなくなった。overflow helperと検査分岐は同じだった。

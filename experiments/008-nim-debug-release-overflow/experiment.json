@@ -1,0 +1,61 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "008-nim-debug-release-overflow",
+  "issue": 78,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/overflow_compare.nim", "kind": "file"},
+    {"path": "tests/prepare_outputs.py", "kind": "file"},
+    {"path": "tests/toolchain.py", "kind": "file"},
+    {"path": "tests/verify_generated_c.py", "kind": "file"},
+    {"path": "tests/run_cases.py", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/compile-2026-08-29.txt", "kind": "file"},
+    {"path": "observed/run-2026-08-29.txt", "kind": "file"},
+    {"path": "observed/generated-c-excerpt.c", "kind": "file"},
+    {"path": "observed/generated-c-diff.txt", "kind": "file"},
+    {"path": "observed/nim-config-excerpt.txt", "kind": "file"},
+    {"path": "observed/nimbase-overflow-excerpt.h", "kind": "file"},
+    {"path": "observed/observation-table.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "debug/release生成先を準備",
+        "argv": ["python3", "tests/prepare_outputs.py"],
+        "timeout_seconds": 30
+      },
+      {
+        "name": "debug buildを生成",
+        "argv": ["nim", "c", "--nimcache:observed/nimcache/debug", "--out:observed/bin/debug/overflow_compare", "src/overflow_compare.nim"],
+        "timeout_seconds": 300
+      },
+      {
+        "name": "release buildを生成",
+        "argv": ["nim", "c", "-d:release", "--nimcache:observed/nimcache/release", "--out:observed/bin/release/overflow_compare", "src/overflow_compare.nim"],
+        "timeout_seconds": 300
+      },
+      {
+        "name": "生成Cと定義鎖を検証",
+        "argv": ["python3", "tests/verify_generated_c.py"],
+        "timeout_seconds": 30,
+        "stdout_contains": ["debug/release overflow generation and definitions verified"]
+      },
+      {
+        "name": "通常値とoverflow境界値を実行",
+        "argv": ["python3", "tests/run_cases.py"],
+        "timeout_seconds": 30,
+        "stdout_contains": [
+          "debug normal: exit=0 stdout=42",
+          "release normal: exit=0 stdout=42",
+          "debug boundary: exit=1 overflow_defect=true add_one_frame=true",
+          "release boundary: exit=1 overflow_defect=true add_one_frame=false"
+        ]
+      }
+    ]
+  }
+}
