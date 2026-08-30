@@ -1,0 +1,5 @@
+$ python3 tests/prepare_outputs.py
+object output directory prepared
+
+$ clang -arch arm64 -std=c11 -Wall -Wextra -Werror -O0 -fno-inline -fno-builtin-puts -c src/symbol_relocation.c -o observed/obj/symbol_relocation.o
+exit_status: 0
