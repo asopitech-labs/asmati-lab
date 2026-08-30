@@ -1,0 +1,10 @@
+$ nm -m observed/obj/symbol_relocation.o
+000000000000003c (__TEXT,__text) external _call_external
+0000000000000000 (__TEXT,__text) external _call_internal
+0000000000000024 (__TEXT,__text) non-external _internal_double
+                 (undefined) external _puts
+0000000000000000 (__TEXT,__text) non-external ltmp0
+0000000000000060 (__LD,__compact_unwind) non-external ltmp1
+
+$ nm -u observed/obj/symbol_relocation.o
+_puts

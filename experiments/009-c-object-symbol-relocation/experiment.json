@@ -1,0 +1,41 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "009-c-object-symbol-relocation",
+  "issue": 65,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/symbol_relocation.c", "kind": "file"},
+    {"path": "tests/prepare_outputs.py", "kind": "file"},
+    {"path": "tests/verify_object.py", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/compile-2026-08-30.txt", "kind": "file"},
+    {"path": "observed/object-info-2026-08-30.txt", "kind": "file"},
+    {"path": "observed/symbols-2026-08-30.txt", "kind": "file"},
+    {"path": "observed/relocations-2026-08-30.txt", "kind": "file"},
+    {"path": "observed/disassembly-excerpt.txt", "kind": "file"},
+    {"path": "observed/observation-table.md", "kind": "file"},
+    {"path": "observed/run-2026-08-30.txt", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "system", "version": "Apple clang"},
+    "steps": [
+      {
+        "name": "prepare output directory",
+        "argv": ["python3", "tests/prepare_outputs.py"],
+        "stdout_contains": ["object output directory prepared"]
+      },
+      {
+        "name": "compile ARM64 Mach-O object",
+        "argv": ["clang", "-arch", "arm64", "-std=c11", "-Wall", "-Wextra", "-Werror", "-O0", "-fno-inline", "-fno-builtin-puts", "-c", "src/symbol_relocation.c", "-o", "observed/obj/symbol_relocation.o"]
+      },
+      {
+        "name": "verify symbols and relocations",
+        "argv": ["python3", "tests/verify_object.py"],
+        "stdout_contains": ["Mach-O symbols and ARM64 branch relocations verified"]
+      }
+    ]
+  }
+}
