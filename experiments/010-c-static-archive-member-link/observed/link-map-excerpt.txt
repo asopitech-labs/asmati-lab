@@ -1,0 +1,13 @@
+# Extracted from observed/bin/link-map.txt
+# Arch: arm64
+# Object files:
+[  0] linker synthesized
+[  1] observed/obj/caller.o
+[  2] observed/lib/libvalues.a(used.o)
+
+# Symbols:
+# Address       Size            File  Name
+0x100000460    0x00000044      [  1] _main
+0x1000004A4    0x00000008      [  2] _used_value
+
+# libvalues.a(unused.o) did not appear in the generated link map.

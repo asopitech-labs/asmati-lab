@@ -1,0 +1,17 @@
+$ python3 tests/prepare_outputs.py
+archive output directories prepared
+
+$ clang -arch arm64 -std=c11 -Wall -Wextra -Werror -O0 -c src/used.c -o observed/obj/used.o
+exit_status: 0
+
+$ clang -arch arm64 -std=c11 -Wall -Wextra -Werror -O0 -c src/unused.c -o observed/obj/unused.o
+exit_status: 0
+
+$ clang -arch arm64 -std=c11 -Wall -Wextra -Werror -O0 -c src/caller.c -o observed/obj/caller.o
+exit_status: 0
+
+$ ar rcs observed/lib/libvalues.a observed/obj/used.o observed/obj/unused.o
+exit_status: 0
+
+$ clang -arch arm64 observed/obj/caller.o observed/lib/libvalues.a -Wl,-map,observed/bin/link-map.txt -o observed/bin/caller
+exit_status: 0

@@ -1,0 +1,11 @@
+$ nm -m observed/lib/libvalues.a
+
+used.o:
+0000000000000000 (__TEXT,__text) external _used_value
+0000000000000000 (__TEXT,__text) non-external ltmp0
+0000000000000008 (__LD,__compact_unwind) non-external ltmp1
+
+unused.o:
+0000000000000000 (__TEXT,__text) external _unused_value
+0000000000000000 (__TEXT,__text) non-external ltmp0
+0000000000000008 (__LD,__compact_unwind) non-external ltmp1

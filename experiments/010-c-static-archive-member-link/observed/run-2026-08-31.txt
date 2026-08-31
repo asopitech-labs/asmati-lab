@@ -1,0 +1,7 @@
+$ observed/bin/caller
+used=42
+exit_status: 0
+
+$ python3 tests/verify_archive.py
+static archive member extraction and linked symbols verified
+exit_status: 0
