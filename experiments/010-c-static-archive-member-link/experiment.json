@@ -1,0 +1,60 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "010-c-static-archive-member-link",
+  "issue": 66,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/used.c", "kind": "file"},
+    {"path": "src/unused.c", "kind": "file"},
+    {"path": "src/caller.c", "kind": "file"},
+    {"path": "tests/prepare_outputs.py", "kind": "file"},
+    {"path": "tests/verify_archive.py", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/compile-link-2026-08-31.txt", "kind": "file"},
+    {"path": "observed/archive-members-2026-08-31.txt", "kind": "file"},
+    {"path": "observed/archive-symbols-2026-08-31.txt", "kind": "file"},
+    {"path": "observed/caller-object-symbols-2026-08-31.txt", "kind": "file"},
+    {"path": "observed/link-map-excerpt.txt", "kind": "file"},
+    {"path": "observed/linked-symbols-2026-08-31.txt", "kind": "file"},
+    {"path": "observed/run-2026-08-31.txt", "kind": "file"},
+    {"path": "observed/observation-table.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "system", "version": "Apple clang"},
+    "steps": [
+      {
+        "name": "prepare output directories",
+        "argv": ["python3", "tests/prepare_outputs.py"],
+        "stdout_contains": ["archive output directories prepared"]
+      },
+      {
+        "name": "compile used archive member",
+        "argv": ["clang", "-arch", "arm64", "-std=c11", "-Wall", "-Wextra", "-Werror", "-O0", "-c", "src/used.c", "-o", "observed/obj/used.o"]
+      },
+      {
+        "name": "compile unused archive member",
+        "argv": ["clang", "-arch", "arm64", "-std=c11", "-Wall", "-Wextra", "-Werror", "-O0", "-c", "src/unused.c", "-o", "observed/obj/unused.o"]
+      },
+      {
+        "name": "compile caller object",
+        "argv": ["clang", "-arch", "arm64", "-std=c11", "-Wall", "-Wextra", "-Werror", "-O0", "-c", "src/caller.c", "-o", "observed/obj/caller.o"]
+      },
+      {
+        "name": "create static archive",
+        "argv": ["ar", "rcs", "observed/lib/libvalues.a", "observed/obj/used.o", "observed/obj/unused.o"]
+      },
+      {
+        "name": "link caller with archive",
+        "argv": ["clang", "-arch", "arm64", "observed/obj/caller.o", "observed/lib/libvalues.a", "-Wl,-map,observed/bin/link-map.txt", "-o", "observed/bin/caller"]
+      },
+      {
+        "name": "verify member extraction and linked symbols",
+        "argv": ["python3", "tests/verify_archive.py"],
+        "stdout_contains": ["static archive member extraction and linked symbols verified"]
+      }
+    ]
+  }
+}

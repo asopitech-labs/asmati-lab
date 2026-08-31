@@ -1,0 +1,7 @@
+$ file observed/lib/libvalues.a
+observed/lib/libvalues.a: current ar archive random library
+
+$ ar -t observed/lib/libvalues.a
+__.SYMDEF SORTED
+used.o
+unused.o

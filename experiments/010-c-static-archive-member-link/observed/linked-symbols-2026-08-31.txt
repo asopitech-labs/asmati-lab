@@ -1,0 +1,14 @@
+$ file observed/bin/caller
+observed/bin/caller: Mach-O 64-bit executable arm64
+
+$ nm -m observed/bin/caller
+0000000100000000 (__TEXT,__text) [referenced dynamically] external __mh_execute_header
+0000000100000460 (__TEXT,__text) external _main
+                 (undefined) external _printf (from libSystem)
+00000001000004a4 (__TEXT,__text) external _used_value
+
+_unused_value was not present in nm -m output.
+
+$ otool -L observed/bin/caller
+observed/bin/caller:
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)

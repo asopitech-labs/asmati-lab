@@ -1,0 +1,12 @@
+$ nm -m observed/obj/caller.o
+0000000000000000 (__TEXT,__text) external _main
+                 (undefined) external _printf
+                 (undefined) external _used_value
+0000000000000044 (__TEXT,__cstring) non-external l_.str
+0000000000000000 (__TEXT,__text) non-external ltmp0
+0000000000000044 (__TEXT,__cstring) non-external ltmp1
+0000000000000050 (__LD,__compact_unwind) non-external ltmp2
+
+$ nm -u observed/obj/caller.o
+_printf
+_used_value
