@@ -1,0 +1,24 @@
+$ file observed/bin/lib/libanswer.dylib observed/bin/caller
+observed/bin/lib/libanswer.dylib: Mach-O 64-bit dynamically linked shared library arm64
+observed/bin/caller:                  Mach-O 64-bit executable arm64
+
+$ otool -D observed/bin/lib/libanswer.dylib
+observed/bin/lib/libanswer.dylib:
+@rpath/libanswer.dylib
+
+$ otool -L observed/bin/lib/libanswer.dylib
+observed/bin/lib/libanswer.dylib:
+	@rpath/libanswer.dylib (compatibility version 0.0.0, current version 0.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)
+
+$ otool -L observed/bin/caller
+observed/bin/caller:
+	@rpath/libanswer.dylib (compatibility version 0.0.0, current version 0.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)
+
+$ nm -m observed/bin/lib/libanswer.dylib
+00000000000002d8 (__TEXT,__text) external _shared_answer
+
+$ nm -u observed/bin/caller
+_printf
+_shared_answer

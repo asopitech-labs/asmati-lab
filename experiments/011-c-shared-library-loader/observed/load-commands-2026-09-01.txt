@@ -1,0 +1,8 @@
+$ otool -l observed/bin/caller
+
+          cmd LC_RPATH
+      cmdsize 32
+         path @loader_path/lib (offset 12)
+
+The caller also contains an LC_LOAD_DYLIB entry for @rpath/libanswer.dylib,
+reported in observed/dependencies-2026-09-01.txt by otool -L.

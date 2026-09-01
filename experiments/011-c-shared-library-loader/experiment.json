@@ -1,0 +1,50 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "011-c-shared-library-loader",
+  "issue": 67,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/answer.c", "kind": "file"},
+    {"path": "src/caller.c", "kind": "file"},
+    {"path": "tests/prepare_outputs.py", "kind": "file"},
+    {"path": "tests/verify_loader.py", "kind": "file"},
+    {"path": "tests/run_cases.py", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/compile-link-2026-09-01.txt", "kind": "file"},
+    {"path": "observed/dependencies-2026-09-01.txt", "kind": "file"},
+    {"path": "observed/load-commands-2026-09-01.txt", "kind": "file"},
+    {"path": "observed/loader-cases-2026-09-01.txt", "kind": "file"},
+    {"path": "observed/observation-table.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "system", "version": "Apple clang"},
+    "steps": [
+      {
+        "name": "prepare output directories",
+        "argv": ["python3", "tests/prepare_outputs.py"],
+        "stdout_contains": ["shared library output directories prepared"]
+      },
+      {
+        "name": "build shared library",
+        "argv": ["clang", "-arch", "arm64", "-std=c11", "-Wall", "-Wextra", "-Werror", "-fPIC", "-dynamiclib", "src/answer.c", "-Wl,-install_name,@rpath/libanswer.dylib", "-o", "observed/bin/lib/libanswer.dylib"]
+      },
+      {
+        "name": "link caller with loader-relative rpath",
+        "argv": ["clang", "-arch", "arm64", "-std=c11", "-Wall", "-Wextra", "-Werror", "src/caller.c", "-Lobserved/bin/lib", "-lanswer", "-Wl,-rpath,@loader_path/lib", "-o", "observed/bin/caller"]
+      },
+      {
+        "name": "verify dependency and loader path",
+        "argv": ["python3", "tests/verify_loader.py"],
+        "stdout_contains": ["shared library dependency and loader path verified"]
+      },
+      {
+        "name": "verify loader success and missing-library failure",
+        "argv": ["python3", "tests/run_cases.py"],
+        "stdout_contains": ["shared library loader success and failure verified"]
+      }
+    ]
+  }
+}

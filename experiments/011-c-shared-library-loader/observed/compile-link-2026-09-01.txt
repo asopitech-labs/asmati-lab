@@ -1,0 +1,8 @@
+$ python3 tests/prepare_outputs.py
+shared library output directories prepared
+
+$ clang -arch arm64 -std=c11 -Wall -Wextra -Werror -fPIC -dynamiclib src/answer.c -Wl,-install_name,@rpath/libanswer.dylib -o observed/bin/lib/libanswer.dylib
+exit_status: 0
+
+$ clang -arch arm64 -std=c11 -Wall -Wextra -Werror src/caller.c -Lobserved/bin/lib -lanswer -Wl,-rpath,@loader_path/lib -o observed/bin/caller
+exit_status: 0
