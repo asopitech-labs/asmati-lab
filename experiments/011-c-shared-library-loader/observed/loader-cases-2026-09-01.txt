@@ -1,0 +1,25 @@
+$ observed/bin/caller
+answer=42
+exit_status: 0
+
+$ DYLD_PRINT_LIBRARIES=1 observed/bin/caller
+dyld[<PID>]: <UUID> <EXPERIMENT>/observed/bin/lib/libanswer.dylib
+answer=42
+exit_status: 0
+
+$ observed/bin/missing/caller
+dyld[<PID>]: Library not loaded: @rpath/libanswer.dylib
+  Referenced from: <UUID> <EXPERIMENT>/observed/bin/missing/caller
+  Reason: tried: '<EXPERIMENT>/observed/bin/missing/lib/libanswer.dylib' (no such file)
+exit_status: nonzero
+
+$ python3 tests/run_cases.py
+success: exit=0 stdout=answer=42
+trace: loaded=<EXPERIMENT>/observed/bin/lib/libanswer.dylib
+missing: exit_nonzero=true
+missing: library_not_loaded=@rpath/libanswer.dylib
+missing: tried=<EXPERIMENT>/observed/bin/missing/lib/libanswer.dylib
+shared library loader success and failure verified
+exit_status: 0
+
+PID、Mach-O UUID、local absolute pathは比較対象ではないためplaceholderへ正規化した。

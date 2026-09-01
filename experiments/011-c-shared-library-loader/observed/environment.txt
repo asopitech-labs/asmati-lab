@@ -1,0 +1,7 @@
+observed_at: 2026-09-01T09:01:40+0900
+os: macOS 26.6.2 (build 25G83)
+architecture: arm64
+compiler: Apple clang version 21.0.0 (clang-2100.1.1.101)
+target: arm64-apple-darwin25.6.0
+loader: dyld supplied by macOS 26.6.2
+inspection_tools: file, nm, otool
