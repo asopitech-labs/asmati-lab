@@ -1,0 +1,43 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "012-c-abi-struct-layout",
+  "issue": 68,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/layout.h", "kind": "file"},
+    {"path": "src/c_layout.c", "kind": "file"},
+    {"path": "src/nim_layout.nim", "kind": "file"},
+    {"path": "src/rust_layout.rs", "kind": "file"},
+    {"path": "tests/prepare_outputs.py", "kind": "file"},
+    {"path": "tests/build_layouts.py", "kind": "file"},
+    {"path": "tests/verify_layouts.py", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/compile-2026-09-02.txt", "kind": "file"},
+    {"path": "observed/layout-results-2026-09-02.txt", "kind": "file"},
+    {"path": "observed/layout-table.md", "kind": "file"},
+    {"path": "observed/declaration-table.md", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "prepare output directory",
+        "argv": ["python3", "tests/prepare_outputs.py"],
+        "stdout_contains": ["layout output directory prepared"]
+      },
+      {
+        "name": "build C, Nim, and Rust layout probes",
+        "argv": ["python3", "tests/build_layouts.py"],
+        "stdout_contains": ["layout target prepared:"]
+      },
+      {
+        "name": "verify C ABI struct layouts",
+        "argv": ["python3", "tests/verify_layouts.py"],
+        "stdout_contains": ["C, Nim, and Rust C-ABI struct layouts verified"]
+      }
+    ]
+  }
+}
