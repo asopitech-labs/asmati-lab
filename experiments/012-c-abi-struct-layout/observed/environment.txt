@@ -1,0 +1,10 @@
+observed_at: 2026-09-02T09:01:44+0900
+os: macOS 26.6.2 (build 25G83)
+machine_architecture: arm64
+comparison_target: x86_64-apple-darwin
+c_compiler: Apple clang version 21.0.0 (clang-2100.1.1.101)
+nim_compiler: Nim 2.2.10 [MacOSX: amd64]
+nim_memory_manager: ORC
+rust_compiler: rustc 1.97.1 (8bab26f4f 2026-07-14) (Homebrew)
+rust_host: x86_64-apple-darwin
+note: all three x86_64 binaries executed successfully on this arm64 macOS host; the translation layer version was not recorded

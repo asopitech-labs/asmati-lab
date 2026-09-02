@@ -1,0 +1,20 @@
+$ file observed/bin/c_layout observed/bin/nim_layout observed/bin/rust_layout
+observed/bin/c_layout:    Mach-O 64-bit executable x86_64
+observed/bin/nim_layout:  Mach-O 64-bit executable x86_64
+observed/bin/rust_layout: Mach-O 64-bit executable x86_64
+
+$ observed/bin/c_layout
+c size=12 align=4 first=0 second=4 ratio=8
+exit_status: 0
+
+$ observed/bin/nim_layout
+nim size=12 align=4 first=0 second=4 ratio=8
+exit_status: 0
+
+$ observed/bin/rust_layout
+rust size=12 align=4 first=0 second=4 ratio=8
+exit_status: 0
+
+$ python3 tests/verify_layouts.py
+C, Nim, and Rust C-ABI struct layouts verified
+exit_status: 0
