@@ -1,0 +1,24 @@
+Issue #56 diagnostic, 2026-09-03 UTC
+PR CI run 33698430035 failed at the full saved/fresh header equality assertion.
+The following local ARM64 header-only diagnostic reproduced the target difference.
+No Rust ARM64 caller was built or executed in this local diagnostic.
+
+$ nim c --forceBuild:on --cc:clang --cpu:arm64 '--passC:-arch arm64' '--passL:-arch arm64' --mm:orc --app:lib --header:pair_api.h --nimcache:observed/nimcache/arm64probe --out:observed/bin/libpair_arm64_probe.dylib --passL:-Wl,-install_name,@rpath/libpair_api.dylib src/pair_api.nim
+exit=0
+$ diff -u observed/pair_api.h observed/nimcache/arm64probe/pair_api.h
+--- observed/pair_api.h (saved x86_64 header; timestamps omitted)
++++ observed/nimcache/arm64probe/pair_api.h (fresh arm64 header; timestamps omitted)
+@@ -2,6 +2,7 @@
+ #ifndef __pair_api__
+ #define __pair_api__
+ #define NIM_INTBITS 64
++#define NIM_EmulateOverflowChecks
+
+ #include "nimbase.h"
+ #undef LANGUAGE_C
+exit=1 (difference found)
+
+The verifier now checks this exact target macro separately and compares all
+remaining header text. Field types/order, by-value signature, binary target,
+symbols, macro expansion, and actual C/Rust calls are still checked freshly.
+The runtime meaning of NIM_EmulateOverflowChecks is outside this ABI experiment.

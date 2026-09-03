@@ -56,6 +56,8 @@ case=2 scalar=32768 pair=32768
 
 入力は順に`(19, 23)`、`(-100, 7)`、`(32767, 1)`。両callerは数値をassertまたは条件分岐で検証する。CとRustのcompile-time assertionでC int幅、struct size/alignment、field offsetを固定した。検証scriptは生成headerのfield型と順序、値渡しsignature、Rust mirror宣言、3 binaryのarchitecture、公開symbol、実行値を新規buildごとに確認する。
 
+初回PR CI（run `33698430035`）はARM64生成headerと保存済みx86_64 headerの全文一致検査で失敗した。ローカルのARM64追加生成では`#define NIM_EmulateOverflowChecks`の1行だけが差分となった（`observed/arm64-header-diff.txt`）。検証scriptはこのmacroの有無をtarget別に検査し、その1行以外のheader全文一致を確認するよう修正した。この追加調査ではローカルARM64 Rust callerは実行していない。macroのoverflow実装は本実験のABI命題には含めない。
+
 ## 公開symbolと初期化
 
 `nm -gU`でlibraryの`_asmati_add`、`_asmati_sum_pair`、`_NimMain`を定義済み公開symbolとして確認した。Rust callerの未定義symbolには前2つがあり、`_NimMain`はない。callerには`@rpath/libpair_api.dylib`の依存が記録され、link commandの`@loader_path`を使って同じdirectoryのlibraryを参照する。

@@ -13,6 +13,7 @@
     {"path": "observed/generated-c-excerpt.c", "kind": "file"},
     {"path": "observed/c-macro-expansion.txt", "kind": "file"},
     {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/arm64-header-diff.txt", "kind": "file"},
     {"path": "observed/symbols-linkage.txt", "kind": "file"},
     {"path": "observed/commands-2026-09-03.txt", "kind": "file"},
     {"path": "observed/run-2026-09-03.txt", "kind": "file"}

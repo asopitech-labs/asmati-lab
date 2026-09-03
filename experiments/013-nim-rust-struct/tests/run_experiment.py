@@ -72,8 +72,13 @@ def main() -> None:
         "--out:observed/bin/libpair_api.dylib",
         "--passL:-Wl,-install_name,@rpath/libpair_api.dylib", "src/pair_api.nim")
     header = (ROOT / "observed/nimcache/pair_api.h").read_text()
-    if not args.record and clean(header) != (ROOT / "observed/pair_api.h").read_text():
-        raise AssertionError("saved generated header differs from fresh header")
+    target_define = "#define NIM_EmulateOverflowChecks\n"
+    if (target_define in header) != (arch == "arm64"):
+        raise AssertionError("unexpected target-specific overflow macro")
+    if not args.record:
+        saved = (ROOT / "observed/pair_api.h").read_text()
+        if clean(header).replace(target_define, "") != saved.replace(target_define, ""):
+            raise AssertionError("generated header differs beyond known target macro")
     generated = (ROOT / "observed/nimcache/@mpair_api.nim.c").read_text()
     require(r"struct AsmatiPair \{\s+int left;\s+int right;\s+\};", header)
     require(r"N_LIB_IMPORT N_CDECL\(int, asmati_sum_pair\)\(AsmatiPair pair_p0\);", header)
