@@ -1,0 +1,10 @@
+Nim 2.2.10 lib/nimbase.h, actual Clang C11 preprocessing:
+#define NIM_EXTERNC
+#define NIM_POSIX_INIT __attribute__((constructor))
+#define N_CDECL(rettype,name) rettype name
+#define N_LIB_EXPORT NIM_EXTERNC __attribute__((visibility("default")))
+#define N_LIB_IMPORT extern
+
+Expanded generated header declarations:
+extern int asmati_add(int left_p0, int right_p1);
+extern int asmati_sum_pair(AsmatiPair pair_p0);

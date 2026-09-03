@@ -1,0 +1,12 @@
+000000000000c5a0 T _NimDestroyGlobals
+000000000000c5f0 T _NimMain
+000000000000c390 T _asmati_add
+000000000000c500 T _asmati_sum_pair
+
+Rust imports (selected):
+_asmati_add
+_asmati_sum_pair
+No _NimMain import in Rust caller.
+observed/bin/rust_caller:
+	@rpath/libpair_api.dylib (compatibility version 0.0.0, current version 0.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)

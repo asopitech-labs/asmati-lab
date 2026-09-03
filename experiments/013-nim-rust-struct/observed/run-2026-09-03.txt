@@ -1,0 +1,17 @@
+observed/bin/libpair_api.dylib: Mach-O 64-bit dynamically linked shared library x86_64
+observed/bin/c_caller: Mach-O 64-bit executable x86_64
+observed/bin/rust_caller: Mach-O 64-bit executable x86_64
+
+c_caller
+size=8 align=4 left=0 right=4
+case=0 scalar=42 pair=42
+case=1 scalar=-93 pair=-93
+case=2 scalar=32768 pair=32768
+exit=0
+
+rust_caller
+size=8 align=4 left=0 right=4
+case=0 scalar=42 pair=42
+case=1 scalar=-93 pair=-93
+case=2 scalar=32768 pair=32768
+exit=0
