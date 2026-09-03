@@ -1,0 +1,178 @@
+Input for Clang stdin probes: #include "pair_api.h"
+
+$ nim --version
+Nim Compiler Version 2.2.10 [MacOSX: amd64]
+Compiled at 2026-04-24
+Copyright (c) 2006-2026 by Andreas Rumpf
+
+active boot switches: -d:release -d:nimUseLinenoise
+exit=0
+
+$ rustc -vV
+rustc 1.97.1 (8bab26f4f 2026-07-14) (Homebrew)
+binary: rustc
+commit-hash: 8bab26f4f68e0e26f0bb7960be334d5b520ea452
+commit-date: 2026-07-14
+host: x86_64-apple-darwin
+release: 1.97.1
+LLVM version: 22.1.8
+exit=0
+
+$ nim c --forceBuild:on --cc:clang --cpu:amd64 '--passC:-arch x86_64' '--passL:-arch x86_64' --mm:orc --app:lib --header:pair_api.h --nimcache:observed/nimcache --out:observed/bin/libpair_api.dylib --passL:-Wl,-install_name,@rpath/libpair_api.dylib src/pair_api.nim
+Hint: used config file '<NIM_ROOT>/config/nim.cfg' [Conf]
+Hint: used config file '<NIM_ROOT>/config/config.nims' [Conf]
+......................................................................
+CC: system/exceptions.nim
+CC: std/private/digitsutils.nim
+CC: system/dollars.nim
+CC: system.nim
+CC: pair_api.nim
+Hint:  [Link]
+Hint: mm: orc; threads: on; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+29369 lines; 0.267s; 30.996MiB peakmem; proj: <EXPERIMENT>/src/pair_api.nim; out: <EXPERIMENT>/observed/bin/libpair_api.dylib [SuccessX]
+exit=0
+
+$ clang -arch x86_64 -std=c11 -Iobserved/nimcache -I<NIM_ROOT>/lib -Wall -Wextra -Werror src/c_caller.c -Lobserved/bin -lpair_api -Wl,-rpath,@loader_path -o observed/bin/c_caller
+exit=0
+
+$ rustc --edition=2024 -Dwarnings -Dimproper_ctypes --target x86_64-apple-darwin src/rust_caller.rs -L native=observed/bin -l dylib=pair_api -C link-arg=-Wl,-rpath,@loader_path -o observed/bin/rust_caller
+exit=0
+
+$ clang -arch x86_64 -std=c11 -Iobserved/nimcache -I<NIM_ROOT>/lib -E -P -x c -
+[Selected output in c-macro-expansion.txt]
+exit=0
+
+$ clang -arch x86_64 -std=c11 -Iobserved/nimcache -I<NIM_ROOT>/lib -dM -E -x c -
+[Selected output in c-macro-expansion.txt]
+exit=0
+
+$ nm -gU observed/bin/libpair_api.dylib
+000000000000c5a0 T _NimDestroyGlobals
+000000000000c5f0 T _NimMain
+000000000000c390 T _asmati_add
+000000000000c500 T _asmati_sum_pair
+exit=0
+
+$ nm -u observed/bin/rust_caller
+__Unwind_Backtrace
+__Unwind_DeleteException
+__Unwind_GetDataRelBase
+__Unwind_GetIP
+__Unwind_GetIPInfo
+__Unwind_GetLanguageSpecificData
+__Unwind_GetRegionStart
+__Unwind_GetTextRelBase
+__Unwind_RaiseException
+__Unwind_Resume
+__Unwind_SetGR
+__Unwind_SetIP
+___bzero
+___error
+__dyld_get_image_header
+__dyld_get_image_name
+__dyld_get_image_vmaddr_slide
+__dyld_image_count
+__tlv_atexit
+__tlv_bootstrap
+_abort
+_asmati_add
+_asmati_sum_pair
+_calloc
+_close$NOCANCEL
+_closedir
+_dirfd
+_dispatch_release
+_dispatch_semaphore_create
+_dispatch_semaphore_signal
+_dispatch_semaphore_wait
+_dup
+_fcntl
+_free
+_fstat$INODE64
+_getcwd
+_getenv
+_malloc
+_memcmp
+_memcpy
+_memmove
+_mmap
+_mprotect
+_munmap
+_open
+_opendir$INODE64
+_pause
+_posix_memalign
+_pthread_get_stackaddr_np
+_pthread_get_stacksize_np
+_pthread_mutex_destroy
+_pthread_mutex_init
+_pthread_mutex_lock
+_pthread_mutex_trylock
+_pthread_mutex_unlock
+_pthread_mutexattr_destroy
+_pthread_mutexattr_init
+_pthread_mutexattr_settype
+_pthread_self
+_pthread_setname_np
+_pthread_threadid_np
+_readdir_r$INODE64
+_realloc
+_sigaction
+_sigaltstack
+_signal
+_strerror_r
+_strlen
+_sysconf
+_write
+_writev
+dyld_stub_binder
+exit=0
+
+$ otool -L observed/bin/rust_caller
+observed/bin/rust_caller:
+	@rpath/libpair_api.dylib (compatibility version 0.0.0, current version 0.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)
+exit=0
+
+$ file observed/bin/libpair_api.dylib
+observed/bin/libpair_api.dylib: Mach-O 64-bit dynamically linked shared library x86_64
+exit=0
+
+$ file observed/bin/c_caller
+observed/bin/c_caller: Mach-O 64-bit executable x86_64
+exit=0
+
+$ file observed/bin/rust_caller
+observed/bin/rust_caller: Mach-O 64-bit executable x86_64
+exit=0
+
+$ observed/bin/c_caller
+size=8 align=4 left=0 right=4
+case=0 scalar=42 pair=42
+case=1 scalar=-93 pair=-93
+case=2 scalar=32768 pair=32768
+exit=0
+
+$ observed/bin/rust_caller
+size=8 align=4 left=0 right=4
+case=0 scalar=42 pair=42
+case=1 scalar=-93 pair=-93
+case=2 scalar=32768 pair=32768
+exit=0
+
+$ sw_vers
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+exit=0
+
+$ uname -m
+arm64
+exit=0
+
+$ clang --version
+Apple clang version 21.0.0 (clang-2100.1.1.101)
+Target: arm64-apple-darwin25.6.0
+Thread model: posix
+InstalledDir: <CLANG_TOOLCHAIN>
+exit=0
