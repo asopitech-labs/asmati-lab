@@ -1,0 +1,12 @@
+000000000000c6a0 T _NimDestroyGlobals
+000000000000c6f0 T _NimMain
+000000000000c3b0 T _asmati_trimmed_length
+000000000000c540 T _asmati_write_label
+
+Caller imports (selected):
+_asmati_trimmed_length
+_asmati_write_label
+No _NimMain import in C caller.
+observed/bin/caller:
+	@rpath/libbuffer_api.dylib (compatibility version 0.0.0, current version 0.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)

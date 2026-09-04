@@ -1,0 +1,14 @@
+Nim 2.2.10 lib/nimbase.h, Clang C11 preprocessing:
+#define NIM_EXTERNC
+#define NIM_POSIX_INIT __attribute__((constructor))
+#define N_CDECL(rettype,name) rettype name
+#define N_LIB_EXPORT NIM_EXTERNC __attribute__((visibility("default")))
+#define N_LIB_IMPORT extern
+
+Selected typedef:
+typedef unsigned char uint8_t;
+typedef uint8_t NU8;
+
+Expanded API declarations:
+extern size_t asmati_trimmed_length(NU8* input_p0, size_t length_p1);
+extern size_t asmati_write_label(NU8* output_p0, size_t capacity_p1);

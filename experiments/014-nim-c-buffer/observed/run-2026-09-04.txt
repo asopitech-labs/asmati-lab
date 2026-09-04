@@ -1,0 +1,7 @@
+observed/bin/libbuffer_api.dylib: Mach-O 64-bit dynamically linked shared library x86_64
+observed/bin/caller: Mach-O 64-bit executable x86_64
+
+input empty=0 padded=2 full=6
+output query=6 full_required=6 short_required=6
+output full=ASMATI short=ASM tails=CC,CC
+exit=0

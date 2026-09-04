@@ -1,0 +1,12 @@
+recorded_utc=2026-09-04T00:06:39.071737+00:00
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+machine=arm64
+Nim Compiler Version 2.2.10 [MacOSX: amd64]
+Compiled at 2026-04-24
+Copyright (c) 2006-2026 by Andreas Rumpf
+
+active boot switches: -d:release -d:nimUseLinenoise
+Apple clang version 21.0.0 (clang-2100.1.1.101)
+selected_target=x86_64-apple-darwin
