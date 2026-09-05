@@ -1,0 +1,30 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "015-nim-openarray-slice",
+  "issue": 48,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/openarray_slice.nim", "kind": "file"},
+    {"path": "tests/run_experiment.py", "kind": "file"},
+    {"path": "observed/call-boundary.md", "kind": "file"},
+    {"path": "observed/generated-c-excerpt.c", "kind": "file"},
+    {"path": "observed/toolchain-definition-excerpt.nim", "kind": "file"},
+    {"path": "observed/commands-2026-09-05.txt", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/run-2026-09-05.txt", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "build and verify Nim openArray slice boundaries",
+        "argv": ["python3", "tests/run_experiment.py"],
+        "timeout_seconds": 300,
+        "stdout_contains": ["Nim openArray pointer, length, alias, and bounds verified"]
+      }
+    ]
+  }
+}

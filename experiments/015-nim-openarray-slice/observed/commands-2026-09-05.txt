@@ -1,0 +1,57 @@
+$ nim --version
+Nim Compiler Version 2.2.10 [MacOSX: amd64]
+Compiled at 2026-04-24
+Copyright (c) 2006-2026 by Andreas Rumpf
+
+active boot switches: -d:release -d:nimUseLinenoise
+exit=0
+
+$ nim c --forceBuild:on --cc:clang --cpu:amd64 '--passC:-arch x86_64' '--passL:-arch x86_64' --mm:orc --nimcache:observed/nimcache --out:observed/bin/openarray_slice src/openarray_slice.nim
+Hint: used config file '<NIM_ROOT>/config/nim.cfg' [Conf]
+Hint: used config file '<NIM_ROOT>/config/config.nims' [Conf]
+...................................................................................................................
+CC: system/exceptions.nim
+CC: std/private/digitsutils.nim
+CC: system/dollars.nim
+CC: system.nim
+CC: posix.nim
+CC: times.nim
+CC: std/cmdline.nim
+CC: openarray_slice.nim
+Hint:  [Link]
+Hint: mm: orc; threads: on; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+54119 lines; 0.542s; 73.094MiB peakmem; proj: <EXPERIMENT>/src/openarray_slice.nim; out: <EXPERIMENT>/observed/bin/openarray_slice [SuccessX]
+exit=0
+
+$ observed/bin/openarray_slice
+array len=4 first=10 last=40 total=100 aliases=true
+seq len=4 first=10 last=40 total=100 aliases=true
+slice len=2 first=20 last=30 total=50 aliases=true
+exit=0
+
+$ observed/bin/openarray_slice oob
+<EXPERIMENT>/src/openarray_slice.nim(26) openarray_slice
+<NIM_ROOT>/lib/system/fatal.nim(62) sysFatal
+Error: unhandled exception: index out of bounds: 1..4 notin 0..3 [IndexDefect]
+exit=1
+
+$ file observed/bin/openarray_slice
+observed/bin/openarray_slice: Mach-O 64-bit executable x86_64
+exit=0
+
+$ sw_vers
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+exit=0
+
+$ uname -m
+arm64
+exit=0
+
+$ clang --version
+Apple clang version 21.0.0 (clang-2100.1.1.101)
+Target: arm64-apple-darwin25.6.0
+Thread model: posix
+InstalledDir: <CLANG_TOOLCHAIN>
+exit=0
