@@ -1,0 +1,49 @@
+$ nim --version
+Nim Compiler Version 2.2.10 [MacOSX: amd64]
+Compiled at 2026-04-24
+Copyright (c) 2006-2026 by Andreas Rumpf
+
+active boot switches: -d:release -d:nimUseLinenoise
+exit=0
+
+$ nim c --forceBuild:on --cc:clang --cpu:amd64 '--passC:-arch x86_64' '--passL:-arch x86_64' --mm:orc --nimcache:observed/nimcache --out:observed/bin/string_copy src/string_copy.nim
+Hint: used config file '<NIM_ROOT>/config/nim.cfg' [Conf]
+Hint: used config file '<NIM_ROOT>/config/config.nims' [Conf]
+......................................................................
+CC: system/exceptions.nim
+CC: std/private/digitsutils.nim
+CC: system/dollars.nim
+CC: system.nim
+CC: string_copy.nim
+Hint:  [Link]
+Hint: mm: orc; threads: on; opt: none (DEBUG BUILD, `-d:release` generates faster code)
+29392 lines; 0.506s; 30.902MiB peakmem; proj: <EXPERIMENT>/src/string_copy.nim; out: <EXPERIMENT>/observed/bin/string_copy [SuccessX]
+exit=0
+
+$ observed/bin/string_copy
+pass len=4 same=true value=ABCD
+return len=4 same=false value=ABCD
+assign before_same=false original=ABCD assigned=ABCD
+assign after_same=false original=ABCD assigned=ZBCD
+exit=0
+
+$ file observed/bin/string_copy
+observed/bin/string_copy: Mach-O 64-bit executable x86_64
+exit=0
+
+$ sw_vers
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+exit=0
+
+$ uname -m
+arm64
+exit=0
+
+$ clang --version
+Apple clang version 21.0.0 (clang-2100.1.1.101)
+Target: arm64-apple-darwin25.6.0
+Thread model: posix
+InstalledDir: <CLANG_TOOLCHAIN>
+exit=0

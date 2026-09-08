@@ -1,0 +1,7 @@
+observed/bin/string_copy: Mach-O 64-bit executable x86_64
+
+pass len=4 same=true value=ABCD
+return len=4 same=false value=ABCD
+assign before_same=false original=ABCD assigned=ABCD
+assign after_same=false original=ABCD assigned=ZBCD
+exit=0
