@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "017-nim-seq-capacity-append",
+  "issue": 50,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/seq_capacity.nim", "kind": "file"},
+    {"path": "tests/run_experiment.py", "kind": "file"},
+    {"path": "observed/capacity-table.md", "kind": "file"},
+    {"path": "observed/generated-c-excerpt.c", "kind": "file"},
+    {"path": "observed/runtime-c-excerpt.c", "kind": "file"},
+    {"path": "observed/toolchain-definition-excerpt.nim", "kind": "file"},
+    {"path": "observed/commands-2026-09-09.txt", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/run-2026-09-09.txt", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "build and verify Nim seq capacity and append",
+        "argv": ["python3", "tests/run_experiment.py"],
+        "timeout_seconds": 300,
+        "stdout_contains": ["Nim seq capacity growth, append lowering, reallocation path, and cleanup verified"]
+      }
+    ]
+  }
+}
