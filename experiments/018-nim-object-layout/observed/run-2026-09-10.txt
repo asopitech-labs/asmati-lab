@@ -1,0 +1,7 @@
+observed/bin/object_layout: Mach-O 64-bit executable x86_64
+
+size=24 align=8
+fieldSizes int=8 bool=1 float=8
+count=0 enabled=8 ratio=16
+score=9.0
+exit=0
