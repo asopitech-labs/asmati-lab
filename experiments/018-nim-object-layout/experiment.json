@@ -1,0 +1,30 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "018-nim-object-layout",
+  "issue": 43,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/object_layout.nim", "kind": "file"},
+    {"path": "tests/run_experiment.py", "kind": "file"},
+    {"path": "observed/layout-table.md", "kind": "file"},
+    {"path": "observed/generated-c-excerpt.c", "kind": "file"},
+    {"path": "observed/nimbase-definition-excerpt.h", "kind": "file"},
+    {"path": "observed/commands-2026-09-10.txt", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/run-2026-09-10.txt", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "build and verify Nim object layout",
+        "argv": ["python3", "tests/run_experiment.py"],
+        "timeout_seconds": 300,
+        "stdout_contains": ["Nim object field order, padding evidence, sizeof, offsets, and generated C verified"]
+      }
+    ]
+  }
+}
