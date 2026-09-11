@@ -1,0 +1,15 @@
+observed/bin/object_type_cast: Mach-O 64-bit executable x86_64
+dogOfDog=true
+catOfDog=false
+dogResult=7
+catResult=-9
+forcedDog=7
+exit=0
+
+observed/bin/object_type_cast_fail: Mach-O 64-bit executable x86_64
+checkedDog=7
+<EXPERIMENT>/src/object_type_cast.nim(24) object_type_cast
+<EXPERIMENT>/src/object_type_cast.nim(18) forceDog
+<NIM_ROOT>/lib/system/fatal.nim(62) sysFatal
+Error: unhandled exception: invalid object conversion [ObjectConversionDefect]
+exit=1
