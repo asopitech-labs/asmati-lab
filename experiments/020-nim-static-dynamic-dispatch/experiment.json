@@ -1,0 +1,30 @@
+{
+  "$schema": "../../schemas/experiment-manifest.schema.json",
+  "schema_version": 1,
+  "id": "020-nim-static-dynamic-dispatch",
+  "issue": 45,
+  "artifacts": [
+    {"path": "README.md", "kind": "file"},
+    {"path": "src/static_dynamic_dispatch.nim", "kind": "file"},
+    {"path": "tests/run_experiment.py", "kind": "file"},
+    {"path": "observed/dispatch-table.md", "kind": "file"},
+    {"path": "observed/generated-c-excerpt.c", "kind": "file"},
+    {"path": "observed/toolchain-definition-excerpt.nim", "kind": "file"},
+    {"path": "observed/commands-2026-09-12.txt", "kind": "file"},
+    {"path": "observed/environment.txt", "kind": "file"},
+    {"path": "observed/run-2026-09-12.txt", "kind": "file"}
+  ],
+  "ci": {
+    "mode": "automated",
+    "os": "macos-latest",
+    "toolchain": {"kind": "nim", "version": "2.2.10"},
+    "steps": [
+      {
+        "name": "build and verify Nim static and dynamic dispatch",
+        "argv": ["python3", "tests/run_experiment.py"],
+        "timeout_seconds": 300,
+        "stdout_contains": ["static direct call, method dispatcher, type checks, and vTable non-use verified"]
+      }
+    ]
+  }
+}
