@@ -1,0 +1,4 @@
+observed/bin/static_dynamic_dispatch: Mach-O 64-bit executable x86_64
+static=105
+dynamic=12
+exit=0
